@@ -13,7 +13,7 @@ class stockProfit
         int profit;
 
         //----------------CONSTRUCTOR--------------------//
-        stockProfit stock(int newStockIndex, int newBuyDate, int newSellDate, vector<vector<int>> A)
+        stockProfit stock(int newStockIndex, int newBuyDate, int newSellDate, vector<vector<int> > A)
         {
             stockIndex = newStockIndex;
             buyDate = newBuyDate;
