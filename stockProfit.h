@@ -13,7 +13,7 @@ class stockProfit
         int profit;
 
         //----------------CONSTRUCTOR--------------------//
-        stockProfit stock(int newStockIndex, int newBuyDate, int newSellDate, vector<vector<int> > A)
+        stockProfit(int newStockIndex, int newBuyDate, int newSellDate, vector<vector<int> > &A)
         {
             stockIndex = newStockIndex;
             buyDate = newBuyDate;
@@ -37,6 +37,23 @@ class stockProfit
         void setProfit(int newProfit){
             profit = newProfit;
         }
+
+        //-------------------GETTERS------------------//
+        int getIndex(){
+            return stockIndex;
+        }
+
+        int getBuyDate(){
+            return buyDate;
+        }
+
+        int getSellDate(){
+            return sellDate;
+        }
+
+        int getProfit(){
+            return profit;
+         }
     };
 
 #endif //COP4533_STOCKPROFIT_H
