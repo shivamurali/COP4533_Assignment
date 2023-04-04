@@ -39,7 +39,6 @@ void readFile1(string fileName, int& m, int& n, vector<vector<int> >& A){
 //----------ALGORITHM FUNCTIONS-------------//
 
 void ALG1(int &m, int &n, vector<vector<int> >& A) {
-
     stockProfit currentMax(1, 1, 2, A);
     // i loop iterates through all stocks:
     for (int i = 0; i < m; i++) {
@@ -59,7 +58,42 @@ void ALG1(int &m, int &n, vector<vector<int> >& A) {
             }
         }
     }
-    cout<<currentMax.getIndex() + 1<<" "<<currentMax.getBuyDate() + 1<<" "<<currentMax.getSellDate() + 1<<endl;
+    // Output (StockIndex BuyDate SellDate)
+    cout<< currentMax.getIndex() + 1 << " " << currentMax.getBuyDate() + 1 << " " << currentMax.getSellDate() + 1 <<endl;
+}
+
+void ALG2(int &m, int &n, vector<vector<int> > &A){
+    int max_profit = A[0][1] - A[0][0];
+    int buyDate = 1;
+    int sellDate = -1;
+    int stockIndex = 1;
+    stockProfit currentMax(1, 1, 2, A);
+
+    //i loop iterates through stocks
+    for(int i = 0; i < m; i++){
+        int lowestPrice = A[i][0];
+        int tempMax = max_profit;
+        for(int j = 0; j < n; j++){
+            if(A[i][j] - lowestPrice > tempMax){
+                tempMax = A[i][j] - lowestPrice;
+                sellDate = j;
+                stockIndex = i;
+            }
+            if(A[i][j] < lowestPrice){
+                lowestPrice = A[i][j];
+                buyDate = j;
+            }
+        }
+        if(tempMax > max_profit){
+            max_profit = tempMax;
+            currentMax.setIndex(stockIndex);
+            currentMax.setBuyDate(buyDate);
+            currentMax.setSellDate(sellDate);
+            currentMax.setProfit(tempMax);
+        }
+    }
+    // Output
+    cout<< currentMax.getIndex() + 1 << " " << currentMax.getBuyDate() + 1 << " " << currentMax.getSellDate() + 1 <<endl;
 }
 
 int main() {
@@ -72,6 +106,9 @@ int main() {
 
     //Algorithm 1
     ALG1(m, n, A);
+
+    //Algorithm 2
+    ALG2(m,n,A);
 
     return 0;
 }
