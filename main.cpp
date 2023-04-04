@@ -6,6 +6,8 @@
 using namespace std;
 
 //----------HELPER FUNCTIONS-------------//
+
+//PROBLEM 1
 void readFile1(string fileName, int& m, int& n, vector<vector<int> >& A){
     ifstream inFile(fileName);
     if(inFile.is_open()){
@@ -36,7 +38,12 @@ void readFile1(string fileName, int& m, int& n, vector<vector<int> >& A){
     }
 }
 
-//----------ALGORITHM FUNCTIONS-------------//
+//PROBLEM 2
+void readFile2(string fileName, int& m, int& n){
+
+}
+
+//----------------ALGORITHM FUNCTIONS------------------//
 
 void ALG1(int &m, int &n, vector<vector<int> >& A) {
     stockProfit currentMax(1, 1, 2, A);
@@ -65,7 +72,7 @@ void ALG1(int &m, int &n, vector<vector<int> >& A) {
 void ALG2(int &m, int &n, vector<vector<int> > &A){
     int max_profit = A[0][1] - A[0][0];
     int buyDate = 1;
-    int sellDate = -1;
+    int sellDate = 2;
     int stockIndex = 1;
     stockProfit currentMax(1, 1, 2, A);
 
@@ -96,6 +103,10 @@ void ALG2(int &m, int &n, vector<vector<int> > &A){
     cout<< currentMax.getIndex() + 1 << " " << currentMax.getBuyDate() + 1 << " " << currentMax.getSellDate() + 1 <<endl;
 }
 
+void ALG3B(int& m, int& n, vector<vector<int> > &A){
+
+}
+
 int main() {
 
     //Problem 1:
@@ -108,7 +119,9 @@ int main() {
     ALG1(m, n, A);
 
     //Algorithm 2
-    ALG2(m,n,A);
+    ALG2(m, n, A);
 
+    //Algorithm 3
+    ALG3B(m, n, A);
     return 0;
 }
