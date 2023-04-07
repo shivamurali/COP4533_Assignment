@@ -168,7 +168,7 @@ void ALG3A(int& m, int& n, vector<vector<int> > &A){
     stack<int> minIndexes;
     stack<int> maxIndexes;
     for(int i = 0; i < m; i++){
-        tempMax = findMaxProfit(A[i], min, max, minIndexes, maxIndexes);git add
+        tempMax = findMaxProfit(A[i], min, max, minIndexes, maxIndexes);
         if(tempMax > max_profit){
             max_profit = tempMax;
             stockIndex = i;
@@ -234,21 +234,50 @@ void ALG3B(int& m, int& n, vector<vector<int> > &A){
 int main() {
 
     //Problem 1:
+    //Sample File for testing:
     int m, n;
-    string problemNum;
     vector<vector<int> > A;
-    readFile1("cop4533/testCases.txt", m, n, A);
+    string problemNumber, currentLine;
 
+    cout<<"Enter problem number: ";
+    cin >>problemNumber;
+    cout<<"Enter m and n separated by a space: ";
+    cin>>m>>n;
+    cout<<"m = "<<m<<" and n = "<<n<<endl;
+    cout<<"Enter stock prices: "<<endl;
+    cin.ignore();
+    for(int i = 0; i < m; i++){
+        vector<int> currentStock;
+        getline(cin, currentLine);
+        istringstream stream2(currentLine);
+        for(int j = 0; j < n; j++){
+            string currentPrice;
+            getline(stream2, currentPrice, ' ');
+            int dayPrice = stoi(currentPrice);
+            currentStock.push_back(dayPrice);
+        }
+        A.push_back(currentStock);
+    }
+
+    //readFile1("cop4533/testCases.txt", m, n, A);
     //Algorithm 1
-    ALG1(m, n, A);
+    if(problemNumber == "1")
+        ALG1(m, n, A);
 
     //Algorithm 2
-    ALG2(m, n, A);
+    else if(problemNumber == "2")
+        ALG2(m, n, A);
 
     //Algorithm 3a
-    ALG3A(m, n, A);
+    else if(problemNumber == "3a")
+        ALG3A(m, n, A);
 
     //Algorithm 3b
-    ALG3B(m, n, A);
+    else if(problemNumber == "3b")
+        ALG3B(m, n, A);
+
+    else
+        cout<<"Invalid input"<<endl;
+
     return 0;
 }
