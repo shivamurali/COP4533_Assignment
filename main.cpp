@@ -4,6 +4,7 @@
 #include <string>
 #include <stack>
 #include "stockProfit.h"
+#include <random>
 using namespace std;
 
 //----------HELPER FUNCTIONS-------------//
@@ -294,7 +295,7 @@ int main() {
     }
     */
     //readFile1("cop4533/testCases.txt", m, n, A);
-    readFile2("cop4533/testCases.txt", m, n, k, A);
+    //readFile2("cop4533/testCases.txt", m, n, k, A);
     //Algorithm 1
     //if(problemNumber == "1")
         //ALG1(m, n, A);
@@ -313,6 +314,8 @@ int main() {
 
     //else
     //    cout<<"Invalid input"<<endl;
+
+    return 0;
 
     return 0;
 }
