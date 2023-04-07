@@ -4,6 +4,7 @@
 #include <string>
 #include <stack>
 #include "stockProfit.h"
+#include <chrono>
 #include <random>
 using namespace std;
 
@@ -118,6 +119,8 @@ void readFile2(string fileName, int& m, int& n, int& k, vector<vector<int> >& A)
 //----------------ALGORITHM FUNCTIONS------------------//
 
 void ALG1(int &m, int &n, vector<vector<int> >& A) {
+    auto startTimer = chrono::high_resolution_clock::now();
+
     stockProfit currentMax(1, 1, 2, A);
     // i loop iterates through all stocks:
     for (int i = 0; i < m; i++) {
@@ -137,11 +140,19 @@ void ALG1(int &m, int &n, vector<vector<int> >& A) {
             }
         }
     }
+    auto stopTimer = chrono::high_resolution_clock::now();
+    auto durationTimer = (stopTimer - startTimer);
+    auto totalTime = chrono::duration_cast<chrono::milliseconds>(durationTimer);
     // Output (StockIndex BuyDate SellDate)
     cout<< currentMax.getIndex() + 1 << " " << currentMax.getBuyDate() + 1 << " " << currentMax.getSellDate() + 1 <<endl;
+
+    //Output time the algorithm took
+    cout << "Algorithm 1 took: " << totalTime.count() << " milliseconds!" << endl << endl;
 }
 
 void ALG2(int &m, int &n, vector<vector<int> > &A){
+    auto startTimer = chrono::high_resolution_clock::now();
+
     int max_profit = A[0][1] - A[0][0];
     int buyDate = 0;
     int sellDate = 1;
@@ -184,11 +195,21 @@ void ALG2(int &m, int &n, vector<vector<int> > &A){
             currentMax.setProfit(tempMax);
         }
     }
+
+    auto stopTimer = chrono::high_resolution_clock::now();
+    auto durationTimer = (stopTimer - startTimer);
+    auto totalTime = chrono::duration_cast<chrono::milliseconds>(durationTimer);
+
     // Output
     cout<< currentMax.getIndex() + 1 << " " << currentMax.getBuyDate() + 1 << " " << currentMax.getSellDate() + 1 << endl;
+
+    //Output time the algorithm took
+    cout << "Algorithm 2 took: " << totalTime.count() << " milliseconds!" << endl << endl;
 }
 
 void ALG3A(int& m, int& n, vector<vector<int> > &A){
+    auto startTimer = chrono::high_resolution_clock::now();
+
     int max_profit = 0;
     int tempMax = 0;
     int stockIndex = 0;
@@ -210,12 +231,22 @@ void ALG3A(int& m, int& n, vector<vector<int> > &A){
             sellDate = maxIndexes.top();
         }
     }
+    auto stopTimer = chrono::high_resolution_clock::now();
+    auto durationTimer = (stopTimer - startTimer);
+    auto totalTime = chrono::duration_cast<chrono::milliseconds>(durationTimer);
+
     cout<<stockIndex+1<<" "<<buyDate+1<<" "<<sellDate+1<<endl;
+
+    //Output time the algorithm took
+    cout << "Algorithm 3A took: " << totalTime.count() << " milliseconds!" << endl << endl;
+
    // cout<<findMaxProfit(A[2], min, max, minIndexes, maxIndexes)<<endl;
    // cout<<minIndexes.top()<<" "<<maxIndexes.top()<<endl;
 }
 
 void ALG3B(int& m, int& n, vector<vector<int> > &A){
+    auto startTimer = chrono::high_resolution_clock::now();
+
     //Return indexes for currentMax
     //ALG3
     //variables
@@ -261,8 +292,15 @@ void ALG3B(int& m, int& n, vector<vector<int> > &A){
             currentMax.setProfit(max_profit);
         }
     }
+    auto stopTimer = chrono::high_resolution_clock::now();
+    auto durationTimer = (stopTimer - startTimer);
+    auto totalTime = chrono::duration_cast<chrono::milliseconds>(durationTimer);
+
     //return indices for currentMax
     cout<< currentMax.getIndex() + 1 << " " << currentMax.getBuyDate() + 1 << " " << currentMax.getSellDate() + 1 <<endl;
+
+    //Output time the algorithm took
+    cout << "Algorithm 3B took: " << totalTime.count() << " milliseconds!" << endl << endl;
 }
 
 int main() {
@@ -294,23 +332,23 @@ int main() {
         A.push_back(currentStock);
     }
     */
-    //readFile1("cop4533/testCases.txt", m, n, A);
+    readFile1("cop4533/p1_3k.txt", m, n, A);
     //readFile2("cop4533/testCases.txt", m, n, k, A);
     //Algorithm 1
     //if(problemNumber == "1")
-        //ALG1(m, n, A);
+        ALG1(m, n, A);
 
     //Algorithm 2
     //else if(problemNumber == "2")
-        //ALG2(m, n, A);
+        ALG2(m, n, A);
 
     //Algorithm 3a
     //else if(problemNumber == "3a")
-        //ALG3A(m, n, A);
+        ALG3A(m, n, A);
 
     //Algorithm 3b
     //else if(problemNumber == "3b")
-        //ALG3B(m, n, A);
+        ALG3B(m, n, A);
 
     //else
     //    cout<<"Invalid input"<<endl;
