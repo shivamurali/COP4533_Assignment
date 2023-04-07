@@ -240,6 +240,7 @@ int main() {
     vector<vector<int> > A;
     string problemNumber, currentLine;
 
+    /*
     cout<<"Enter problem number: ";
     cin >>problemNumber;
     cout<<"Enter m and n separated by a space: ";
@@ -259,26 +260,26 @@ int main() {
         }
         A.push_back(currentStock);
     }
-
-    //readFile1("cop4533/testCases.txt", m, n, A);
+    */
+    readFile1("cop4533/testCases.txt", m, n, A);
     //Algorithm 1
-    if(problemNumber == "1")
+    //if(problemNumber == "1")
         ALG1(m, n, A);
 
     //Algorithm 2
-    else if(problemNumber == "2")
+    //else if(problemNumber == "2")
         ALG2(m, n, A);
 
     //Algorithm 3a
-    else if(problemNumber == "3a")
+    //else if(problemNumber == "3a")
         ALG3A(m, n, A);
 
     //Algorithm 3b
-    else if(problemNumber == "3b")
+    //else if(problemNumber == "3b")
         ALG3B(m, n, A);
 
-    else
-        cout<<"Invalid input"<<endl;
+    //else
+    //    cout<<"Invalid input"<<endl;
 
     return 0;
 }
