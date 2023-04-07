@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <stack>
 #include "stockProfit.h"
 using namespace std;
 
