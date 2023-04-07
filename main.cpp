@@ -78,8 +78,40 @@ int findMaxProfit(vector<int> A, int& min, int& maxi, stack<int> &minIndexes, st
     return max(max(leftHalf, rightHalf), (rightMax - leftMin));
 }
 //PROBLEM 2
-void readFile2(string fileName, int& m, int& n){
+void readFile2(string fileName, int& m, int& n, int& k, vector<vector<int> >& A){
+    ifstream inFile(fileName);
+    if(inFile.is_open()){
+        //Variables
+        string lineFromFile;
+        string tempK, tempM, tempN;
 
+        //Read in first line
+        getline(inFile, tempK);
+
+        //Read in second line
+        getline(inFile,lineFromFile);
+        istringstream stream(lineFromFile);
+
+        getline(stream, tempM, ' ');
+        getline(stream, tempN, ' ');
+        k = stoi(tempK);
+        m = stoi(tempM);
+        n = stoi(tempN);
+
+        //Parse m lines:
+        while(getline(inFile, lineFromFile)){
+            vector<int> currentStock;
+            istringstream stream2(lineFromFile);
+            for(int i = 0; i < n; i++){
+                string tempPrice;
+                getline(stream2, tempPrice, ' ');
+                int dayPrice = stoi(tempPrice);
+                currentStock.push_back(dayPrice);
+            }
+            A.push_back(currentStock);
+        }
+
+    }
 }
 
 //----------------ALGORITHM FUNCTIONS------------------//
@@ -236,7 +268,7 @@ int main() {
 
     //Problem 1:
     //Sample File for testing:
-    int m, n;
+    int m, n, k;
     vector<vector<int> > A;
     string problemNumber, currentLine;
 
@@ -261,22 +293,23 @@ int main() {
         A.push_back(currentStock);
     }
     */
-    readFile1("cop4533/testCases.txt", m, n, A);
+    //readFile1("cop4533/testCases.txt", m, n, A);
+    readFile2("cop4533/testCases.txt", m, n, k, A);
     //Algorithm 1
     //if(problemNumber == "1")
-        ALG1(m, n, A);
+        //ALG1(m, n, A);
 
     //Algorithm 2
     //else if(problemNumber == "2")
-        ALG2(m, n, A);
+        //ALG2(m, n, A);
 
     //Algorithm 3a
     //else if(problemNumber == "3a")
-        ALG3A(m, n, A);
+        //ALG3A(m, n, A);
 
     //Algorithm 3b
     //else if(problemNumber == "3b")
-        ALG3B(m, n, A);
+        //ALG3B(m, n, A);
 
     //else
     //    cout<<"Invalid input"<<endl;
