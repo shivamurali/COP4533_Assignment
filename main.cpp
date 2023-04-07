@@ -6,6 +6,7 @@
 #include "stockProfit.h"
 #include <chrono>
 #include <random>
+#include <unordered_map>
 using namespace std;
 
 //----------HELPER FUNCTIONS-------------//
@@ -244,6 +245,94 @@ void ALG3A(int& m, int& n, vector<vector<int> > &A){
    // cout<<minIndexes.top()<<" "<<maxIndexes.top()<<endl;
 }
 
+void ALG3B(int& m, int& n,vector<vector<int> >& A) {
+    vector<int> dp(m, 0);
+
+    for (int i = 0; i < m; i++) {
+        int min_price = A[i][0];
+        for (int j = 1; j < n; j++) {
+            if (A[i][j] - min_price > dp[i]) {
+                dp[i] = A[i][j] - min_price;
+            }
+            if (A[i][j] < min_price) {
+                min_price = A[i][j];
+            }
+        }
+    }
+
+    int max_profit = 0, stock_index = 0;
+    for (int i = 0; i < m; i++) {
+        if (dp[i] > max_profit) {
+            max_profit = dp[i];
+            stock_index = i;
+        }
+    }
+
+    int buy_day_index = 0, sell_day_index = 0;
+    int min_price = A[stock_index][0];
+    for (int j = 0; j < n; j++) {
+        if (A[stock_index][j] - min_price == max_profit) {
+            sell_day_index = j;
+            break;
+        }
+        if (A[stock_index][j] < min_price) {
+            min_price = A[stock_index][j];
+            buy_day_index = j;
+        }
+    }
+
+    cout << "Stock: " << stock_index << ", Buy Day: " << buy_day_index << ", Sell Day: " << sell_day_index << endl;
+}
+
+using namespace std;
+
+int find_max_profit(int i, int j, const vector<vector<int> >& A, unordered_map<string, int>& memo) {
+    // Base case: If we reach the last day or there's only one stock, return 0
+    if (j == A[0].size() || i == A.size() - 1) {
+        return 0;
+    }
+
+    // Check if we already computed the result for this subproblem
+    string key = to_string(i) + "," + to_string(j);
+    if (memo.count(key)) {
+        return memo[key];
+    }
+
+    // Recursive case: Find the maximum profit by either buying today or skipping today
+    int max_profit = 0;
+    for (int k = j + 1; k < A[0].size(); k++) {
+        int profit_today = A[i+1][k] - A[i][j];
+        if (profit_today > 0) {
+            int profit_tomorrow = find_max_profit(i+1, k+1, A, memo);
+            max_profit = max(max_profit, profit_today + profit_tomorrow);
+        }
+    }
+
+    // Memoize the result and return it
+    memo[key] = max_profit;
+    return max_profit;
+}
+
+void ALG3Aalt(vector<vector<int> > A) {
+    unordered_map<string, int> memo;
+
+    int max_profit = 0, stock_index = 0, buy_day_index = 0, sell_day_index = 0;
+    for (int i = 0; i < A.size() - 1; i++) {
+        for (int j = 0; j < A[0].size(); j++) {
+            int profit = find_max_profit(i, j, A, memo);
+            if (profit > max_profit) {
+                max_profit = profit;
+                stock_index = i;
+                buy_day_index = j;
+                sell_day_index = j + memo[to_string(i) + "," + to_string(j)];
+            }
+        }
+    }
+
+    cout << "Stock: " << stock_index << ", Buy Day: " << buy_day_index << ", Sell Day: " << sell_day_index << endl;
+}
+
+/*
 void ALG3B(int& m, int& n, vector<vector<int> > &A){
     auto startTimer = chrono::high_resolution_clock::now();
 
@@ -302,6 +391,7 @@ void ALG3B(int& m, int& n, vector<vector<int> > &A){
     //Output time the algorithm took
     cout << "Algorithm 3B took: " << totalTime.count() << " milliseconds!" << endl << endl;
 }
+*/
 
 int main() {
 
@@ -345,6 +435,7 @@ int main() {
     //Algorithm 3a
     //else if(problemNumber == "3a")
         ALG3A(m, n, A);
+        //ALG3Aalt(A);
 
     //Algorithm 3b
     //else if(problemNumber == "3b")
