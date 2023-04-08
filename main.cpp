@@ -306,7 +306,7 @@ void ALG3B(int& m, int& n,vector<vector<int> >& A) {
     cout << stockIndex + 1 << " " << buyDate+1 << " " << sellDate + 1 << endl;
 
     // Output time the algorithm took
-    cout << "Algorithm 3A took: " << totalTime.count() << " milliseconds!" << endl << endl;
+    cout << "Algorithm 3B took: " << totalTime.count() << " milliseconds!" << endl << endl;
 }
 
 int find_max_profit(int i, int j, const vector<vector<int> >& A, unordered_map<string, int>& memo) {
@@ -365,7 +365,7 @@ int main() {
         A.push_back(currentStock);
     }
     */
-    readFile1("cop4533/p1_5k.txt", m, n, A);
+    readFile1("cop4533/p1_1k.txt", m, n, A);
     //readFile2("cop4533/testCases.txt", m, n, k, A);
     //Algorithm 1
     //if(problemNumber == "1")
