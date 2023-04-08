@@ -125,11 +125,11 @@ void ALG1(int &m, int &n, vector<vector<int> >& A) {
     stockProfit currentMax(1, 1, 2, A);
     // i loop iterates through all stocks:
     for (int i = 0; i < m; i++) {
-        //j loop iterates through all dates:
-        //j loop stores first date:
+        // j loop iterates through all dates:
+        // j loop stores first date:
         for (int j = 0; j < n; j++) {
-            //k loop iterates through all dates again:
-            //k loop looks at dates after j loop:
+            // k loop iterates through all dates again:
+            // k loop looks at dates after j loop:
             for (int k = j + 1; k < n; k++) {
                 stockProfit currentProfit(i, j, k, A);
                 if(currentMax.profit < currentProfit.profit) {
@@ -141,19 +141,23 @@ void ALG1(int &m, int &n, vector<vector<int> >& A) {
             }
         }
     }
+
+    // Timer
     auto stopTimer = chrono::high_resolution_clock::now();
     auto durationTimer = (stopTimer - startTimer);
     auto totalTime = chrono::duration_cast<chrono::milliseconds>(durationTimer);
-    // Output (StockIndex BuyDate SellDate)
+
+    // Output indices
     cout<< currentMax.getIndex() + 1 << " " << currentMax.getBuyDate() + 1 << " " << currentMax.getSellDate() + 1 <<endl;
 
-    //Output time the algorithm took
+    // Output time the algorithm took
     cout << "Algorithm 1 took: " << totalTime.count() << " milliseconds!" << endl << endl;
 }
 
 void ALG2(int &m, int &n, vector<vector<int> > &A){
     auto startTimer = chrono::high_resolution_clock::now();
 
+    //Variables and intialization
     int max_profit = A[0][1] - A[0][0];
     int buyDate = 0;
     int sellDate = 1;
@@ -161,25 +165,29 @@ void ALG2(int &m, int &n, vector<vector<int> > &A){
     int lowestPriceDay = buyDate;
     stockProfit currentMax(1, 1, 2, A);
 
-    //i loop iterates through stocks
+    // i loop iterates through stocks
     for(int i = 0; i < m; i++)
     {
         lowestPriceDay = 0;
         int lowestPrice = A[i][0];
         int tempMax = max_profit;
 
+        // j loop iterates through the days of the stock
         for(int j = 0; j < n; j++)
         {
             int tempBuyDate = 0;
 
+            // Compare if the current price for that day is less than the lowestPrice
             if(A[i][j] < lowestPrice)
             {
                 lowestPrice = A[i][j];
                 tempBuyDate = j;
             }
 
+            // Compare if the current price - lowest price is greater than tempMax
             if(A[i][j] - lowestPrice > tempMax)
             {
+                //Store these values
                 tempMax = A[i][j] - lowestPrice;
                 sellDate = j;
                 stockIndex = i;
@@ -187,6 +195,8 @@ void ALG2(int &m, int &n, vector<vector<int> > &A){
             }
             lowestPriceDay = max(lowestPriceDay,tempBuyDate);
         }
+
+        // Set the object's traits
         if(tempMax > max_profit)
         {
             max_profit = tempMax;
@@ -197,14 +207,15 @@ void ALG2(int &m, int &n, vector<vector<int> > &A){
         }
     }
 
+    // Timer
     auto stopTimer = chrono::high_resolution_clock::now();
     auto durationTimer = (stopTimer - startTimer);
     auto totalTime = chrono::duration_cast<chrono::milliseconds>(durationTimer);
 
-    // Output
+    // Output indices
     cout<< currentMax.getIndex() + 1 << " " << currentMax.getBuyDate() + 1 << " " << currentMax.getSellDate() + 1 << endl;
 
-    //Output time the algorithm took
+    // Output time the algorithm took
     cout << "Algorithm 2 took: " << totalTime.count() << " milliseconds!" << endl << endl;
 }
 
@@ -218,7 +229,7 @@ void ALG3A(int& m, int& n, vector<vector<int> > &A){
     int sellDate = 0;
     stockProfit currentMax(1, 1, 2, A);
 
-    //i loop iterates through stocks:
+    // i loop iterates through stocks:
     int min = 0;
     int max = A[2].size();
     stack<int> minIndexes;
@@ -232,59 +243,71 @@ void ALG3A(int& m, int& n, vector<vector<int> > &A){
             sellDate = maxIndexes.top();
         }
     }
+
+    // Timer
     auto stopTimer = chrono::high_resolution_clock::now();
     auto durationTimer = (stopTimer - startTimer);
     auto totalTime = chrono::duration_cast<chrono::milliseconds>(durationTimer);
 
-    cout<<stockIndex+1<<" "<<buyDate+1<<" "<<sellDate+1<<endl;
+    // Output indices
+    cout << stockIndex + 1 << " " << buyDate+1 << " " << sellDate + 1 << endl;
 
-    //Output time the algorithm took
+    // Output time the algorithm took
     cout << "Algorithm 3A took: " << totalTime.count() << " milliseconds!" << endl << endl;
-
-   // cout<<findMaxProfit(A[2], min, max, minIndexes, maxIndexes)<<endl;
-   // cout<<minIndexes.top()<<" "<<maxIndexes.top()<<endl;
 }
 
 void ALG3B(int& m, int& n,vector<vector<int> >& A) {
-    vector<int> dp(m, 0);
+    auto startTimer = chrono::high_resolution_clock::now();
+
+    //Variables
+    vector<int> profits(m, 0);
+    int buyDate = 0;
+    int sellDate = 0;
 
     for (int i = 0; i < m; i++) {
-        int min_price = A[i][0];
+        int minPrice = A[i][0];
         for (int j = 1; j < n; j++) {
-            if (A[i][j] - min_price > dp[i]) {
-                dp[i] = A[i][j] - min_price;
+            if (A[i][j] - minPrice > profits[i]) {
+                profits[i] = A[i][j] - minPrice;
             }
-            if (A[i][j] < min_price) {
-                min_price = A[i][j];
+            if (A[i][j] < minPrice) {
+                minPrice = A[i][j];
             }
         }
     }
 
-    int max_profit = 0, stock_index = 0;
+    int maxProfit = 0, stockIndex = 0;
     for (int i = 0; i < m; i++) {
-        if (dp[i] > max_profit) {
-            max_profit = dp[i];
-            stock_index = i;
+        if (profits[i] > maxProfit) {
+            maxProfit = profits[i];
+            stockIndex = i;
         }
     }
 
-    int buy_day_index = 0, sell_day_index = 0;
-    int min_price = A[stock_index][0];
+    int minPrice = A[stockIndex][0];
+
     for (int j = 0; j < n; j++) {
-        if (A[stock_index][j] - min_price == max_profit) {
-            sell_day_index = j;
+        if (A[stockIndex][j] - minPrice == maxProfit) {
+            sellDate = j;
             break;
         }
-        if (A[stock_index][j] < min_price) {
-            min_price = A[stock_index][j];
-            buy_day_index = j;
+        if (A[stockIndex][j] < minPrice) {
+            minPrice = A[stockIndex][j];
+            buyDate = j;
         }
     }
 
-    cout << "Stock: " << stock_index << ", Buy Day: " << buy_day_index << ", Sell Day: " << sell_day_index << endl;
-}
+    // Timer
+    auto stopTimer = chrono::high_resolution_clock::now();
+    auto durationTimer = (stopTimer - startTimer);
+    auto totalTime = chrono::duration_cast<chrono::milliseconds>(durationTimer);
 
-using namespace std;
+    // Output indices
+    cout << stockIndex + 1 << " " << buyDate+1 << " " << sellDate + 1 << endl;
+
+    // Output time the algorithm took
+    cout << "Algorithm 3A took: " << totalTime.count() << " milliseconds!" << endl << endl;
+}
 
 int find_max_profit(int i, int j, const vector<vector<int> >& A, unordered_map<string, int>& memo) {
     // Base case: If we reach the last day or there's only one stock, return 0
@@ -312,86 +335,6 @@ int find_max_profit(int i, int j, const vector<vector<int> >& A, unordered_map<s
     memo[key] = max_profit;
     return max_profit;
 }
-
-void ALG3Aalt(vector<vector<int> > A) {
-    unordered_map<string, int> memo;
-
-    int max_profit = 0, stock_index = 0, buy_day_index = 0, sell_day_index = 0;
-    for (int i = 0; i < A.size() - 1; i++) {
-        for (int j = 0; j < A[0].size(); j++) {
-            int profit = find_max_profit(i, j, A, memo);
-            if (profit > max_profit) {
-                max_profit = profit;
-                stock_index = i;
-                buy_day_index = j;
-                sell_day_index = j + memo[to_string(i) + "," + to_string(j)];
-            }
-        }
-    }
-
-    cout << "Stock: " << stock_index << ", Buy Day: " << buy_day_index << ", Sell Day: " << sell_day_index << endl;
-}
-
-/*
-void ALG3B(int& m, int& n, vector<vector<int> > &A){
-    auto startTimer = chrono::high_resolution_clock::now();
-
-    //Return indexes for currentMax
-    //ALG3
-    //variables
-    int max_profit = A[0][1] - A[0][0];
-    int buyDate = 0;
-    int sellDate = 1;
-    int stockIndex = 0;
-    stockProfit currentMax(1, 1, 2, A);
-
-    //i loop iterates through stocks
-    for(int i = 0; i < m; i++){
-        //
-        int tempProfit = max_profit;
-        int sum = tempProfit;
-        int largestSum = tempProfit;
-        //J loop iterates through stock prices, stopping before last date:
-        for(int j = 0; j < n - 1; j++){
-            tempProfit = A[i][j+1] - A[i][j];
-            //If sum is positive, keep track temporarily:
-            if(sum > 0){
-                sum += tempProfit;
-            }
-            //If sum is negative, use tempProfit instead:
-            else{
-                sum = tempProfit;
-                buyDate = j;
-                //stockIndex = i;
-            }
-
-            //Change sum to new greatest profit value for current stock:
-            if(sum > largestSum){
-                largestSum = sum;
-                sellDate = j + 1;
-                stockIndex = i;
-            }
-        }
-        //If profit for this stock is greater than previous stocks, change stock and set values:
-        if(largestSum > max_profit){
-            max_profit = largestSum;
-            currentMax.setIndex(stockIndex);
-            currentMax.setBuyDate(buyDate);
-            currentMax.setSellDate(sellDate);
-            currentMax.setProfit(max_profit);
-        }
-    }
-    auto stopTimer = chrono::high_resolution_clock::now();
-    auto durationTimer = (stopTimer - startTimer);
-    auto totalTime = chrono::duration_cast<chrono::milliseconds>(durationTimer);
-
-    //return indices for currentMax
-    cout<< currentMax.getIndex() + 1 << " " << currentMax.getBuyDate() + 1 << " " << currentMax.getSellDate() + 1 <<endl;
-
-    //Output time the algorithm took
-    cout << "Algorithm 3B took: " << totalTime.count() << " milliseconds!" << endl << endl;
-}
-*/
 
 int main() {
 
@@ -422,7 +365,7 @@ int main() {
         A.push_back(currentStock);
     }
     */
-    readFile1("cop4533/p1_3k.txt", m, n, A);
+    readFile1("cop4533/p1_5k.txt", m, n, A);
     //readFile2("cop4533/testCases.txt", m, n, k, A);
     //Algorithm 1
     //if(problemNumber == "1")
@@ -443,8 +386,6 @@ int main() {
 
     //else
     //    cout<<"Invalid input"<<endl;
-
-    return 0;
 
     return 0;
 }
