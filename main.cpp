@@ -330,7 +330,7 @@ void ALG3B(int& m, int& n,vector<vector<int> >& A) {
     auto totalTime = chrono::duration_cast<chrono::milliseconds>(durationTimer);
 
     // Output indices
-    cout << stockIndex + 1 << " " << buyDate+1 << " " << sellDate + 1 << endl;
+    cout << stockIndex + 1 << " " << buyDate + 1 << " " << sellDate + 1 << endl;
 
     // Output time the algorithm took
     cout << "Algorithm 3B took: " << totalTime.count() << " milliseconds!" << endl << endl;
@@ -338,16 +338,22 @@ void ALG3B(int& m, int& n,vector<vector<int> >& A) {
 
 void ALG4(int &m, int &n, int &k, vector<vector<int> >& A)
 {
+    auto startTimer = chrono::high_resolution_clock::now();
+
 
 }
 
 void ALG5(int &m, int &n, int &k, vector<vector<int> >& A)
 {
+    auto startTimer = chrono::high_resolution_clock::now();
+
 
 }
 
 void ALG6(int &m, int &n, int &k, vector<vector<int> >& A)
 {
+    auto startTimer = chrono::high_resolution_clock::now();
+
 
 }
 
