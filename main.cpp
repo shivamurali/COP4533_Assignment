@@ -339,8 +339,31 @@ void ALG3B(int& m, int& n,vector<vector<int> >& A) {
 void ALG4(int &m, int &n, int &k, vector<vector<int> >& A)
 {
     auto startTimer = chrono::high_resolution_clock::now();
+    vector<stockProfit> allProfits;
+    vector<stockProfit> currentCombination;
 
+    //Store all stock profit combinations
+    for(int i = 0; i < m; i++){
+        for(int j = 0;  j < n; j++){
+            for(int p = j+1; p < n; p++){
+                stockProfit currentProfit(i,j,p, A);
+                allProfits.push_back(currentProfit);
+            }
+        }
+    }
 
+    //Store all Cumulative Profit Combinations:
+    int tempTotalMaxProfit;
+    int numTransactions;
+
+    while(numTransactions < k){
+        for(int i = 0; i < allProfits.size(); i++){
+            if (allProfits[i].getProfit() > tempTotalMaxProfit){
+                currentCombination.push_back(allProfits[i]);
+                numTransactions++;
+            }
+        }
+    }
 }
 
 void ALG5(int &m, int &n, int &k, vector<vector<int> >& A)
