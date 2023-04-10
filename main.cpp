@@ -117,6 +117,33 @@ void readFile2(string fileName, int& m, int& n, int& k, vector<vector<int> >& A)
     }
 }
 
+int find_max_profit(int i, int j, const vector<vector<int> >& A, unordered_map<string, int>& memo) {
+    // Base case: If we reach the last day or there's only one stock, return 0
+    if (j == A[0].size() || i == A.size() - 1) {
+        return 0;
+    }
+
+    // Check if we already computed the result for this subproblem
+    string key = to_string(i) + "," + to_string(j);
+    if (memo.count(key)) {
+        return memo[key];
+    }
+
+    // Recursive case: Find the maximum profit by either buying today or skipping today
+    int max_profit = 0;
+    for (int k = j + 1; k < A[0].size(); k++) {
+        int profit_today = A[i+1][k] - A[i][j];
+        if (profit_today > 0) {
+            int profit_tomorrow = find_max_profit(i+1, k+1, A, memo);
+            max_profit = max(max_profit, profit_today + profit_tomorrow);
+        }
+    }
+
+    // Memoize the result and return it
+    memo[key] = max_profit;
+    return max_profit;
+}
+
 //----------------ALGORITHM FUNCTIONS------------------//
 
 void ALG1(int &m, int &n, vector<vector<int> >& A) {
@@ -309,31 +336,19 @@ void ALG3B(int& m, int& n,vector<vector<int> >& A) {
     cout << "Algorithm 3B took: " << totalTime.count() << " milliseconds!" << endl << endl;
 }
 
-int find_max_profit(int i, int j, const vector<vector<int> >& A, unordered_map<string, int>& memo) {
-    // Base case: If we reach the last day or there's only one stock, return 0
-    if (j == A[0].size() || i == A.size() - 1) {
-        return 0;
-    }
+void ALG4(int &m, int &n, int &k, vector<vector<int> >& A)
+{
 
-    // Check if we already computed the result for this subproblem
-    string key = to_string(i) + "," + to_string(j);
-    if (memo.count(key)) {
-        return memo[key];
-    }
+}
 
-    // Recursive case: Find the maximum profit by either buying today or skipping today
-    int max_profit = 0;
-    for (int k = j + 1; k < A[0].size(); k++) {
-        int profit_today = A[i+1][k] - A[i][j];
-        if (profit_today > 0) {
-            int profit_tomorrow = find_max_profit(i+1, k+1, A, memo);
-            max_profit = max(max_profit, profit_today + profit_tomorrow);
-        }
-    }
+void ALG5(int &m, int &n, int &k, vector<vector<int> >& A)
+{
 
-    // Memoize the result and return it
-    memo[key] = max_profit;
-    return max_profit;
+}
+
+void ALG6(int &m, int &n, int &k, vector<vector<int> >& A)
+{
+
 }
 
 int main() {
@@ -384,6 +399,11 @@ int main() {
     //else if(problemNumber == "3b")
         ALG3B(m, n, A);
 
+        ALG4(m, n, k, A);
+
+        ALG5(m, n, k, A);
+
+        ALG6(m, n, k , A);
     //else
     //    cout<<"Invalid input"<<endl;
 
