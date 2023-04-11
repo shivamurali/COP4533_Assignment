@@ -3,7 +3,7 @@
 #include <sstream>
 #include <string>
 #include <stack>
-#include "stockProfit.h"
+//#include "stockProfit.h"
 #include <chrono>
 #include <random>
 #include <unordered_map>
@@ -11,6 +11,66 @@ using namespace std;
 
 //----------HELPER FUNCTIONS-------------//
 
+class stockProfit
+{
+public:
+    int stockIndex;
+    int buyDate;
+    int sellDate;
+    int profit;
+
+    //----------------CONSTRUCTOR--------------------//
+    stockProfit(int newStockIndex, int newBuyDate, int newSellDate, vector<vector<int> > &A)
+    {
+        stockIndex = newStockIndex;
+        buyDate = newBuyDate;
+        sellDate = newSellDate;
+        profit = A[stockIndex][sellDate] - A[stockIndex][buyDate];
+    }
+
+    //----------------DEFAULT CONSTRUCTOR------------------------//
+    stockProfit(int newStockIndex, int newBuyDate, int newSellDate, int profit)
+    {
+        this->stockIndex = newStockIndex;
+        this->buyDate = newBuyDate;
+        this->sellDate = newSellDate;
+        this->profit = profit;
+    }
+
+    //-------------------SETTERS------------------//
+    void setIndex(int newIndex){
+        stockIndex = newIndex;
+    }
+
+    void setBuyDate(int newBuyDate){
+        buyDate = newBuyDate;
+    }
+
+    void setSellDate(int newSellDate){
+        sellDate = newSellDate;
+    }
+
+    void setProfit(int newProfit){
+        profit = newProfit;
+    }
+
+    //-------------------GETTERS------------------//
+    int getIndex(){
+        return stockIndex;
+    }
+
+    int getBuyDate(){
+        return buyDate;
+    }
+
+    int getSellDate(){
+        return sellDate;
+    }
+
+    int getProfit(){
+        return profit;
+    }
+};
 //PROBLEM 1
 void readFile1(string fileName, int& m, int& n, vector<vector<int> >& A){
     ifstream inFile(fileName);
@@ -338,6 +398,13 @@ void ALG3B(int& m, int& n,vector<vector<int> >& A) {
 
 void ALG4(int &m, int &n, int &k, vector<vector<int> >& A)
 {
+
+
+
+}
+
+void ALG5(int &m, int &n, int &k, vector<vector<int> >& A)
+{
     auto startTimer = chrono::high_resolution_clock::now();
     vector<stockProfit> allProfits;
     vector<stockProfit> currentCombination;
@@ -352,50 +419,90 @@ void ALG4(int &m, int &n, int &k, vector<vector<int> >& A)
         }
     }
 
-    //Store all Cumulative Profit Combinations:
-    int tempTotalMaxProfit;
-    int numTransactions;
+    for (int i = 0; i < k; i++)
+    {
+        int tempMaxProfit = 0;
+        int tempIndex = 0;
 
-    while(numTransactions < k){
-        for(int i = 0; i < allProfits.size(); i++){
-            if (allProfits[i].getProfit() > tempTotalMaxProfit){
-                currentCombination.push_back(allProfits[i]);
-                numTransactions++;
+        if (!currentCombination.empty())
+        {
+            for (int p = 0; p < allProfits.size(); p++)
+            {
+                if (allProfits[p].profit > tempMaxProfit)
+                {
+                    bool invalid = false;
+                    for (int x = 0; x < currentCombination.size(); x++)
+                    {
+                        if (currentCombination[x].sellDate > allProfits[p].buyDate)
+                        {
+                            invalid = true;
+                        }
+
+                        if (invalid)
+                        {
+                            break;
+                        }
+
+                        tempMaxProfit = allProfits[p].profit;
+                        tempIndex = p;
+                    }
+                }
             }
+            currentCombination.push_back(allProfits[tempIndex]);
+            allProfits.erase(allProfits.begin()+tempIndex);
+        }
+
+        if (currentCombination.size() == 0)
+        {
+            for (int p = 0; p < allProfits.size(); p++)
+            {
+                if (allProfits[p].profit > tempMaxProfit)
+                {
+                    tempMaxProfit = allProfits[p].profit;
+                    tempIndex = p;
+                }
+            }
+            currentCombination.push_back(allProfits[tempIndex]);
+
+            allProfits.erase(allProfits.begin()+tempIndex);
         }
     }
-}
 
-void ALG5(int &m, int &n, int &k, vector<vector<int> >& A)
-{
-    auto startTimer = chrono::high_resolution_clock::now();
-
-
+    // Output
+    for (int i = 0; i < currentCombination.size(); i++)
+    {
+        cout << currentCombination[i].stockIndex + 1 << " " << currentCombination[i].buyDate + 1 << " " << currentCombination[i].sellDate + 1 << endl;
+    }
 }
 
 void ALG6(int &m, int &n, int &k, vector<vector<int> >& A)
 {
-    auto startTimer = chrono::high_resolution_clock::now();
+
 
 
 }
 
-int main() {
+int main(int argc, char** argv) {
+
 
     //Problem 1:
     //Sample File for testing:
     int m, n, k;
     vector<vector<int> > A;
     string problemNumber, currentLine;
+    string input = argv[1];
+    if(input == "1" || input == "2" || input == "3a" || input == "3b"){
+        cin>>m>>n;
+        cin.ignore();
+    }
+    else if(input == "4" || input == "5" ||input == "6"){
+        cin>>k;
+        cin>>m>>n;
+        cout<<"Enter stock prices: "<<endl;
+        cin.ignore();
+    }
 
-    /*
-    cout<<"Enter problem number: ";
-    cin >>problemNumber;
-    cout<<"Enter m and n separated by a space: ";
-    cin>>m>>n;
-    cout<<"m = "<<m<<" and n = "<<n<<endl;
-    cout<<"Enter stock prices: "<<endl;
-    cin.ignore();
+
     for(int i = 0; i < m; i++){
         vector<int> currentStock;
         getline(cin, currentLine);
@@ -408,33 +515,34 @@ int main() {
         }
         A.push_back(currentStock);
     }
-    */
-    readFile1("cop4533/p1_1k.txt", m, n, A);
-    //readFile2("cop4533/testCases.txt", m, n, k, A);
+
     //Algorithm 1
-    //if(problemNumber == "1")
+    if(input == "1")
         ALG1(m, n, A);
 
-    //Algorithm 2
-    //else if(problemNumber == "2")
+        //Algorithm 2
+    else if(input == "2")
         ALG2(m, n, A);
 
-    //Algorithm 3a
-    //else if(problemNumber == "3a")
+        //Algorithm 3a
+    else if(input == "3a")
         ALG3A(m, n, A);
-        //ALG3Aalt(A);
 
-    //Algorithm 3b
-    //else if(problemNumber == "3b")
+        //Algorithm 3b
+    else if(input == "3b")
         ALG3B(m, n, A);
 
+    else if(input == "4")
         ALG4(m, n, k, A);
 
+    else if(input == "5")
         ALG5(m, n, k, A);
 
+    else if(input == "6")
         ALG6(m, n, k , A);
-    //else
-    //    cout<<"Invalid input"<<endl;
+
+    else
+        cout<<"Invalid input"<<endl;
 
     return 0;
 }
