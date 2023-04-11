@@ -238,7 +238,7 @@ void ALG1(int &m, int &n, vector<vector<int> >& A) {
     cout<< currentMax.getIndex() + 1 << " " << currentMax.getBuyDate() + 1 << " " << currentMax.getSellDate() + 1 <<endl;
 
     // Output time the algorithm took
-    cout << "Algorithm 1 took: " << totalTime.count() << " milliseconds!" << endl << endl;
+    //cout << "Algorithm 1 took: " << totalTime.count() << " milliseconds!" << endl << endl;
 }
 
 void ALG2(int &m, int &n, vector<vector<int> > &A){
@@ -303,7 +303,7 @@ void ALG2(int &m, int &n, vector<vector<int> > &A){
     cout<< currentMax.getIndex() + 1 << " " << currentMax.getBuyDate() + 1 << " " << currentMax.getSellDate() + 1 << endl;
 
     // Output time the algorithm took
-    cout << "Algorithm 2 took: " << totalTime.count() << " milliseconds!" << endl << endl;
+    //cout << "Algorithm 2 took: " << totalTime.count() << " milliseconds!" << endl << endl;
 }
 
 void ALG3A(int& m, int& n, vector<vector<int> > &A){
@@ -340,7 +340,7 @@ void ALG3A(int& m, int& n, vector<vector<int> > &A){
     cout << stockIndex + 1 << " " << buyDate+1 << " " << sellDate + 1 << endl;
 
     // Output time the algorithm took
-    cout << "Algorithm 3A took: " << totalTime.count() << " milliseconds!" << endl << endl;
+    //cout << "Algorithm 3A took: " << totalTime.count() << " milliseconds!" << endl << endl;
 }
 
 void ALG3B(int& m, int& n,vector<vector<int> >& A) {
@@ -393,7 +393,7 @@ void ALG3B(int& m, int& n,vector<vector<int> >& A) {
     cout << stockIndex + 1 << " " << buyDate + 1 << " " << sellDate + 1 << endl;
 
     // Output time the algorithm took
-    cout << "Algorithm 3B took: " << totalTime.count() << " milliseconds!" << endl << endl;
+    //cout << "Algorithm 3B took: " << totalTime.count() << " milliseconds!" << endl << endl;
 }
 
 void ALG4(int &m, int &n, int &k, vector<vector<int> >& A)
@@ -405,7 +405,10 @@ void ALG4(int &m, int &n, int &k, vector<vector<int> >& A)
 
 void ALG5(int &m, int &n, int &k, vector<vector<int> >& A)
 {
+    // Timer
     auto startTimer = chrono::high_resolution_clock::now();
+
+// Variables
     vector<stockProfit> allProfits;
     vector<stockProfit> currentCombination;
 
@@ -419,20 +422,27 @@ void ALG5(int &m, int &n, int &k, vector<vector<int> >& A)
         }
     }
 
+// Iterates until the max number of transactions
     for (int i = 0; i < k; i++)
     {
+        // Variables
         int tempMaxProfit = 0;
         int tempIndex = 0;
 
+        // Checks if the transaction is  valid (on second iteration or more)
         if (!currentCombination.empty())
         {
+            // Finds object with the highest profit inside the allProfits vector
             for (int p = 0; p < allProfits.size(); p++)
             {
                 if (allProfits[p].profit > tempMaxProfit)
                 {
                     bool invalid = false;
+
+                    // Iterates through the vector that contains previous transactions
                     for (int x = 0; x < currentCombination.size(); x++)
                     {
+                        // Checks if the object is a valid transaction
                         if (currentCombination[x].sellDate > allProfits[p].buyDate)
                         {
                             invalid = true;
@@ -448,12 +458,17 @@ void ALG5(int &m, int &n, int &k, vector<vector<int> >& A)
                     }
                 }
             }
+            // Push back the object into the vector that stores all transactions
             currentCombination.push_back(allProfits[tempIndex]);
+
+            // Remove object from the list of all objects
             allProfits.erase(allProfits.begin()+tempIndex);
         }
 
+        // First iteration, adds first element into currentCombination (the most profitable transaction)
         if (currentCombination.size() == 0)
         {
+            // Iterate through entire list of combinations
             for (int p = 0; p < allProfits.size(); p++)
             {
                 if (allProfits[p].profit > tempMaxProfit)
@@ -462,8 +477,11 @@ void ALG5(int &m, int &n, int &k, vector<vector<int> >& A)
                     tempIndex = p;
                 }
             }
+
+            // Adds object to currentCombination
             currentCombination.push_back(allProfits[tempIndex]);
 
+            // Remove object from the list of all objects
             allProfits.erase(allProfits.begin()+tempIndex);
         }
     }
@@ -498,7 +516,6 @@ int main(int argc, char** argv) {
     else if(input == "4" || input == "5" ||input == "6"){
         cin>>k;
         cin>>m>>n;
-        cout<<"Enter stock prices: "<<endl;
         cin.ignore();
     }
 
